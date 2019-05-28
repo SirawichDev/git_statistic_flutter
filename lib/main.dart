@@ -121,52 +121,58 @@ class HomePage extends StatelessWidget {
         height: 125.0,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20.0), color: Colors.white),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(32.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "200",
-                      style: TextStyle(
-                          fontSize: 25.0, fontWeight: FontWeight.bold),
+        child: ClipRRect(
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(20.0),bottomLeft: Radius.circular(20.0)),
+                  child: CustomPaint(
+            painter: PointPainter(),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(32.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "200",
+                          style: TextStyle(
+                              fontSize: 25.0, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "rank",
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              color: Colors.pink.withOpacity(.7),
+                              fontWeight: FontWeight.bold),
+                        )
+                      ],
                     ),
-                    Text(
-                      "rank",
-                      style: TextStyle(
-                          fontSize: 15.0,
-                          color: Colors.pink.withOpacity(.7),
-                          fontWeight: FontWeight.bold),
-                    )
-                  ],
+                  ),
                 ),
-              ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(32.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "4000",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 25.0),
+                        ),
+                        Text(
+                          "contributed",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.pink.withOpacity(.7)),
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ],
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(32.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "4000",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 25.0),
-                    ),
-                    Text(
-                      "contributed",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.pink.withOpacity(.7)),
-                    )
-                  ],
-                ),
-              ),
-            )
-          ],
+          ),
         ),
       ),
     );
@@ -333,5 +339,33 @@ class HomePage extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class PointPainter extends CustomPainter {
+  Paint _paint = Paint();
+
+  @override
+  void paint(Canvas canvas, Size size) {
+
+    // Offset center = new Offset(size.width / 2, size.height / 2);
+    var path = Path();
+    _paint.color = Colors.tealAccent.withOpacity(.9);
+    path.moveTo(0, 0);
+    path.lineTo(size.width / 2, 0);
+    path.lineTo(size.width / 2 - 20, size.height);
+    path.lineTo(0, size.height);
+    path.close();
+
+    canvas.drawPath(path, _paint);
+    // canvas.drawCircle(center,50.0 , _paint);
+    // canvas.drawCircle(Offset(size.width + 3,size.height + 4),50.0 , _paint);
+    // canvas.drawCircle(Offset(size.width / 90,size.height /20),50.0 , _paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    // TODO: implement shouldRepaint
+    return true;
   }
 }
