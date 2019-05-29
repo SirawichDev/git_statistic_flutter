@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'dart:io' show Platform;
 void main() {
   return runApp(MaterialApp(
     home: HomePage(),
@@ -28,7 +29,7 @@ class HomePage extends StatelessWidget {
             padding:
                 const EdgeInsets.only(top: 15.0, right: 20.0, bottom: 10.0),
             child: Container(
-              height: 200.0,
+              height: 250.0,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(60.0),
                   color: Colors.teal.withOpacity(0.1)),
@@ -67,7 +68,7 @@ class HomePage extends StatelessWidget {
           userComponent(),
           scorerComponent(),
           graphComponent(),
-          friendComponent()
+          FriendComponent()
         ],
       ),
     );
@@ -122,8 +123,10 @@ class HomePage extends StatelessWidget {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20.0), color: Colors.white),
         child: ClipRRect(
-          borderRadius: BorderRadius.only(topLeft: Radius.circular(20.0),bottomLeft: Radius.circular(20.0)),
-                  child: CustomPaint(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.0),
+              bottomLeft: Radius.circular(20.0)),
+          child: CustomPaint(
             painter: PointPainter(),
             child: Row(
               children: <Widget>[
@@ -240,50 +243,62 @@ class HomePage extends StatelessWidget {
   Widget chartComponent(String day, int value) {
     var cHeight = 150.0 * value / 100.0;
     var offsety = 200.0 - cHeight - 60.0;
-    return Column(
-      children: <Widget>[
-        SizedBox(
-          height: offsety,
-        ),
-        Text(
-          value.toString(),
-          style: TextStyle(
-              fontSize: 12.0,
-              color: value > 50 ? Colors.cyanAccent : Colors.yellow),
-        ),
-        SizedBox(
-          height: 10.0,
-        ),
-        Container(
-          width: 2.0,
-          height: cHeight,
-          color: value > 50 ? Colors.cyanAccent : Colors.yellowAccent,
-        ),
-        SizedBox(
-          height: 10.0,
-        ),
-        Text(
-          day,
-          style: TextStyle(fontSize: 12.0, color: Colors.white.withOpacity(.8)),
-        )
-      ],
+    return Expanded(
+      child: Column(
+        children: <Widget>[
+          SizedBox(
+            height: offsety,
+          ),
+          Text(
+            value.toString(),
+            style: TextStyle(
+                fontSize: 12.0,
+                color: value > 50 ? Colors.cyanAccent : Colors.yellow),
+          ),
+          SizedBox(
+            height: 10.0,
+          ),
+          Container(
+            width: 2.0,
+            height: cHeight,
+            color: value > 50 ? Colors.cyanAccent : Colors.yellowAccent,
+          ),
+          SizedBox(
+            height: 10.0,
+          ),
+          Text(
+            day,
+            style:
+                TextStyle(fontSize: 12.0, color: Colors.white.withOpacity(.8)),
+          )
+        ],
+      ),
     );
   }
+}
 
-  Widget friendComponent() {
+class FriendComponent extends StatelessWidget {
+
+  @override
+
+  Widget build(BuildContext context) {
+    ScreenUtil.instance = ScreenUtil(width: 750, height: 1334, allowFontScaling: true)..init(context);
     return Padding(
       padding: const EdgeInsets.only(top: 30.0),
       child: Container(
-        height: 190.0,
+        height: Platform.isAndroid ? MediaQuery.of(context).size.height / 5: MediaQuery.of(context).size.height / 4,
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(25.0)),
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30.0),
+                topRight: Radius.circular(30.0))),
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: Platform.isAndroid ? EdgeInsets.all(20.0): EdgeInsets.all(30.0),
                 child: Text(
                   "Friends",
                   style: TextStyle(fontWeight: FontWeight.w700),
@@ -309,8 +324,8 @@ class HomePage extends StatelessWidget {
                             image: AssetImage('assets/x.jpeg'))),
                   ),
                   Container(
-                    width: 70.0,
-                    height: 70.0,
+                    width: 75.0,
+                    height: 75.0,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(25.0),
                         image: DecorationImage(
@@ -347,10 +362,9 @@ class PointPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-
     // Offset center = new Offset(size.width / 2, size.height / 2);
     var path = Path();
-    _paint.color = Colors.tealAccent.withOpacity(.9);
+    _paint.color = Colors.tealAccent.withOpacity(.5);
     path.moveTo(0, 0);
     path.lineTo(size.width / 2, 0);
     path.lineTo(size.width / 2 - 20, size.height);
